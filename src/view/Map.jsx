@@ -1,11 +1,12 @@
-// src/components/Map.js
+/* Author: Sotiris Konstantis */
+
 import "leaflet/dist/leaflet.css";
 import React, { useEffect, useState } from "react";
 import { MapContainer, GeoJSON } from "react-leaflet";
 import * as mapConfig from "../constants/mapConfig";
 import { onEachGreeceFeature } from "../functions/onEachGreeceFeature";
-import { useSetDate } from "../functions/setDate"; 
-import { setDataLoaded } from "../variables/dataLoaded"
+import { setDataLoaded } from "../variables/dataLoaded";
+import DateComponent from './DateComponent'; 
 
 const Map = () => {
   const [greeceData, setGreeceData] = useState(null);
@@ -25,23 +26,24 @@ const Map = () => {
     Promise.all([fetchGreeceData, fetchEuropeData]).then(() => setDataLoaded(true));
   }, [mapConfig.greeceJSONPath, mapConfig.europeJSONPath]);
 
-  
-  useSetDate("2024-07-14");
-
   return (
-    <MapContainer
-      center={mapConfig.center}
-      zoom={mapConfig.zoom}
-      zoomSnap={mapConfig.zoomSnap}
-      maxZoom={mapConfig.maxZoom}
-      minZoom={mapConfig.minZoom}
-      maxBounds={mapConfig.maxBounds}
-      maxBoundsViscosity={mapConfig.maxBoundsViscosity}
-      style={mapConfig.style}
-    >
-      {europeData && <GeoJSON data={europeData} style={mapConfig.europeStyle} />}
-      {greeceData && <GeoJSON data={greeceData} style={mapConfig.greeceStyle} onEachFeature={onEachGreeceFeature} />}
-    </MapContainer>
+    <div style={mapConfig.style}>
+      <MapContainer
+        center={mapConfig.center}
+        zoom={mapConfig.zoom}
+        zoomSnap={mapConfig.zoomSnap}
+        maxZoom={mapConfig.maxZoom}
+        minZoom={mapConfig.minZoom}
+        maxBounds={mapConfig.maxBounds}
+        maxBoundsViscosity={mapConfig.maxBoundsViscosity}
+        style={mapConfig.style}
+      >
+        {europeData && <GeoJSON data={europeData} style={mapConfig.europeStyle} />}
+        {greeceData && <GeoJSON data={greeceData} style={mapConfig.greeceStyle} onEachFeature={onEachGreeceFeature} />}
+      </MapContainer>
+
+      <DateComponent/>
+    </div>
   );
 };
 

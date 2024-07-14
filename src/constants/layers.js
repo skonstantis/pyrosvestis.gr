@@ -1,5 +1,5 @@
 /* Author: Sotiris Konstantis */
 
-var layers = [];
+let layers = [];
 
 export default layers;

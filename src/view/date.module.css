@@ -1,0 +1,29 @@
+.dateWrapper {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.dateContainer {
+    background: white;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.arrow {
+    cursor: pointer;
+    font-size: 1.5rem; 
+    color: white;
+    margin: 0 10px; 
+    user-select: none; 
+    pointer-events: all;
+}
+
+.arrow:hover {
+    color: lightgray; 
+}

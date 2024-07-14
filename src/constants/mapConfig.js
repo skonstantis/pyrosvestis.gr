@@ -6,7 +6,7 @@ export const greeceJSONPath = "../../assets/dasarcheia-final.geojson";
 
 export const europeJSONPath = "../../assets/europe.geojson";
 
-export const center = [38.4, 24];
+export const center = [38.3, 24.8];
 
 export const zoom = isMobileDevice() ? 5.8 : 6.6;
 

@@ -8,6 +8,7 @@ import layers from "../constants/layers"
 
 export const useSetDate = (date) => {
   const [seasonDataMap, setSeasonDataMap] = useState(null);
+  let seasonExists = true;
 
   useEffect(() => {
     const loadData = async () => {
@@ -26,7 +27,8 @@ export const useSetDate = (date) => {
 
           setSeasonDataMap(dataMap);
         } catch (error) {
-          console.error("Error fetching season JSON data:", error);
+          //console.error("Error fetching season JSON data:", error);
+          seasonExists = false;
         }
       }
     };
@@ -37,7 +39,7 @@ export const useSetDate = (date) => {
   useEffect(() => {
     if (seasonDataMap) {
       const entries = seasonDataMap[date]?.entries || [];
-      if(entries.length)
+      if(seasonExists && entries.length)
         entries.forEach(({ id, risk }) => {
           changeLayerColor(id, risk);
         });
