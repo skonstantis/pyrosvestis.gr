@@ -1,10 +1,35 @@
 /* Author: Sotiris Konstantis */
 
 import { useEffect, useState } from "react";
-import { changeLayerColor } from "./changeLayerColor"; 
+import { changeLayerColor } from "./changeLayerColor";
 import dataFile from "../constants/dataFile";
 import { dataLoadedPromise } from "../variables/dataLoaded";
-import layers from "../constants/layers"
+import { calendarVisible, setCalendarVisible } from "../variables/calendarVisible";
+import layers from "../constants/layers";
+
+export const changeDate = (prevDate, direction) => {
+  const newDate = new Date(prevDate);
+  newDate.setDate(newDate.getDate() + (direction === "next" ? 1 : -1));
+  return newDate.toISOString().split("T")[0];
+};
+
+export const getInterval = (count) => {
+  if (count < 1) return 300;
+  if (count < 11) return 200;
+  if (count < 41) return 100;
+  return 50;
+};
+
+export const formatDateInGreek = (dateString) => {
+  const options = {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    locale: "el-GR",
+  };
+  const date = new Date(dateString);
+  return date.toLocaleDateString("el-GR", options);
+};
 
 export const useSetDate = (date) => {
   const [seasonDataMap, setSeasonDataMap] = useState(null);
@@ -32,19 +57,31 @@ export const useSetDate = (date) => {
         }
       }
     };
-    
+
     loadData();
   }, [date]);
 
   useEffect(() => {
     if (seasonDataMap) {
       const entries = seasonDataMap[date]?.entries || [];
-      if(seasonExists && entries.length)
+      if (seasonExists && entries.length)
         entries.forEach(({ id, risk }) => {
           changeLayerColor(id, risk);
         });
       else
-        console.log(layers.forEach((layer) => changeLayerColor(layer.feature.properties.CODE, 5)));
+        layers.forEach((layer) =>
+          changeLayerColor(layer.feature.properties.CODE, 5)
+        );
     }
   }, [seasonDataMap, date]);
+};
+
+export const handleDateClick = () => {
+  if (calendarVisible) {
+    setCalendarVisible(false);
+    alert("notVisible");
+  } else {
+    setCalendarVisible(true);
+    alert("visible");
+  }
 };
