@@ -8,16 +8,16 @@
     display: flex;
     align-items: center;
     z-index: 1000;
-}
-
-.dateContainer {
-    width: 160px; 
+  }
+  
+  .dateContainer {
+    width: 160px;
     text-align: center;
     position: relative;
-}
-
-.dateContainer::after {
-    content: 'Ημερολόγιο';
+  }
+  
+  .dateContainer::after {
+    content: "Ημερολόγιο";
     position: absolute;
     bottom: 120%;
     left: 50%;
@@ -31,16 +31,16 @@
     transition: opacity 0.3s;
     white-space: nowrap;
     font-size: 12px;
-    z-index: 1; 
-}
-
-.dateContainer:hover::after {
+    z-index: 1;
+  }
+  
+  .dateContainer:hover::after {
     opacity: 1;
     visibility: visible;
-}
-
-.dateInnerContainer {
-    display: inline-block; 
+  }
+  
+  .dateInnerContainer {
+    display: inline-block;
     background: white;
     padding: 5px;
     border-radius: 4px;
@@ -48,9 +48,9 @@
     font-size: 16px;
     cursor: pointer;
     position: relative;
-}
-
-.arrow {
+  }
+  
+  .arrow {
     position: relative;
     display: inline-block;
     padding: 10px;
@@ -60,9 +60,9 @@
   }
   
   .arrow::after {
-    content: '';
+    content: "";
     position: absolute;
-    bottom: 80%; 
+    bottom: 80%;
     left: 50%;
     transform: translateX(-50%);
     background-color: white;
@@ -73,8 +73,8 @@
     visibility: hidden;
     transition: opacity 0.3s;
     white-space: nowrap;
-    font-size: 12px; 
-    z-index: 1; 
+    font-size: 12px;
+    z-index: 1;
   }
   
   .arrow:hover::after {
@@ -83,9 +83,48 @@
   }
   
   .arrow.previous::after {
-    content: '-1 ημέρα';
+    content: "-1 ημέρα";
   }
   
   .arrow.next::after {
-    content: '+1 ημέρα';
+    content: "+1 ημέρα";
   }
+  
+  .calendarContainer {
+    position: absolute;
+    bottom: 120%; 
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+  }  
+  
+  .calendar {
+    width: 100%; 
+    max-width: 350px;
+  }
+  
+  .react-calendar {
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .react-calendar__month-view__days__day {
+    height: 40px; 
+  }
+  
+  .react-calendar__tile {
+    max-width: 100%!important; 
+    padding: 10px 6.6667px; 
+  }
+  
+  .react-calendar__tile--active {
+    background: #006edc;
+    color: white;
+  }
+  
+  .react-calendar__tile--now {
+    background: #ffff76;
+    color: black;
+  }
+  

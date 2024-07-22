@@ -1,3 +1,5 @@
+/* Author: Sotiris Konstantis */
+
 export default class Locations {
   constructor() {
       this.items = new Map();

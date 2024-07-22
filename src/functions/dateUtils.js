@@ -4,8 +4,18 @@ import { useEffect, useState } from "react";
 import { changeLayerColor } from "./changeLayerColor";
 import dataFile from "../constants/dataFile";
 import { dataLoadedPromise } from "../variables/dataLoaded";
-import { calendarVisible, setCalendarVisible } from "../variables/calendarVisible";
 import layers from "../constants/layers";
+import moment from 'moment';
+
+export const handleDateClick = (calendarVisible, setCalendarVisible) => {
+  setCalendarVisible(!calendarVisible);
+};
+
+export const onChange = (newDate, setDate, setCalendarVisible) => {
+  const formattedDate = moment(newDate).format('YYYY-MM-DD');
+  setDate(formattedDate);
+  setCalendarVisible(false);
+};
 
 export const changeDate = (prevDate, direction) => {
   const newDate = new Date(prevDate);
@@ -74,14 +84,4 @@ export const useSetDate = (date) => {
         );
     }
   }, [seasonDataMap, date]);
-};
-
-export const handleDateClick = () => {
-  if (calendarVisible) {
-    setCalendarVisible(false);
-    alert("notVisible");
-  } else {
-    setCalendarVisible(true);
-    alert("visible");
-  }
 };
