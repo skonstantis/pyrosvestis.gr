@@ -1,12 +1,12 @@
 /* Author: Sotiris Konstantis */
 
-import {isMobileDevice} from "../functions/isMobileDevice"
+import { isMobileDevice } from "../functions/isMobileDevice";
 
 export const greeceJSONPath = "../../assets/dasarcheia-final.geojson";
 
 export const europeJSONPath = "../../assets/europe.geojson";
 
-export const center = [38.3, 24.8];
+export const center = isMobileDevice() ? [38.3, 24.0] : [38.3, 24.8];
 
 export const zoom = isMobileDevice() ? 5.8 : 6.6;
 
@@ -40,4 +40,19 @@ export const europeStyle = {
   fillColor: "#4A4F77",
   fillOpacity: 0.1,
   stroke: "TRUE",
+};
+
+export const overlayStyle = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  width: '100vw',
+  height: '100vh',
+  backgroundColor: 'grey',
+  zIndex: 10000,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  color: 'white',
+  fontSize: '24px'
 };

@@ -1,6 +1,8 @@
 /* Author: Sotiris Konstantis */
 
-import { changeDate, getInterval } from './dateUtils';
+import { changeDate, getInterval } from "./dateUtils";
+
+import { tapDelay } from "../constants/tapDelay";
 
 export const runInterval = (direction, clickCount, setDate, setIntervalId, runInterval) => {
   setDate(prevDate => changeDate(prevDate, direction));
@@ -11,11 +13,16 @@ export const runInterval = (direction, clickCount, setDate, setIntervalId, runIn
 };
 
 export const handleMouseDown = (direction, clickCount, setDate, setIntervalId, runInterval) => {
-  setDate(prevDate => changeDate(prevDate, direction));
   clickCount.current = 1;
   const initialInterval = getInterval(clickCount.current);
-  const id = setTimeout(() => runInterval(direction, clickCount, setDate, setIntervalId, runInterval), initialInterval);
+  const id = setTimeout(() => {
+    if (clickCount.current !== 0) {
+      runInterval(direction, clickCount, setDate, setIntervalId, runInterval);
+    }
+  }, tapDelay);
+
   setIntervalId(id);
+  setDate(prevDate => changeDate(prevDate, direction));
 };
 
 export const handleMouseUp = (clickCount, intervalId, setIntervalId) => {

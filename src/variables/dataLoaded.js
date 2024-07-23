@@ -2,16 +2,22 @@
 
 let resolveDataLoaded;
 let rejectDataLoaded;
+let isResolved = false;
 
 const dataLoadedPromise = new Promise((resolve, reject) => {
-  resolveDataLoaded = resolve;
+  resolveDataLoaded = (value) => {
+    if (!isResolved) {
+      isResolved = true;
+      resolve(value);
+    }
+  };
   rejectDataLoaded = reject;
 });
 
 export const setDataLoaded = (value) => {
-  if (value) {
+  if (resolveDataLoaded) {
     resolveDataLoaded(value);
   }
 };
 
-export { dataLoadedPromise };
+export const getDataLoadedPromise = () => dataLoadedPromise;

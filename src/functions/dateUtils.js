@@ -1,18 +1,18 @@
 /* Author: Sotiris Konstantis */
 
 import { useEffect, useState } from "react";
-import { changeLayerColor } from "./changeLayerColor";
+import { changeLayerColor } from "./colorUtils";
 import dataFile from "../constants/dataFile";
-import { dataLoadedPromise } from "../variables/dataLoaded";
+import { getDataLoadedPromise } from "../variables/dataLoaded";
 import layers from "../constants/layers";
-import moment from 'moment';
+import moment from "moment";
 
 export const handleDateClick = (calendarVisible, setCalendarVisible) => {
   setCalendarVisible(!calendarVisible);
 };
 
 export const onChange = (newDate, setDate, setCalendarVisible) => {
-  const formattedDate = moment(newDate).format('YYYY-MM-DD');
+  const formattedDate = moment(newDate).format("YYYY-MM-DD");
   setDate(formattedDate);
   setCalendarVisible(false);
 };
@@ -41,19 +41,22 @@ export const formatDateInGreek = (dateString) => {
   return date.toLocaleDateString("el-GR", options);
 };
 
-export const useSetDate = (date) => {
+export const useSetDate = (date, setMaxColor) => {
   const [seasonDataMap, setSeasonDataMap] = useState(null);
-  let seasonExists = true;
+  const [seasonExists, setSeasonExists] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
-      const loaded = await dataLoadedPromise;
-      if (loaded) {
-        const year = date.split("-")[0];
-        const filePath = `${dataFile}season${year}.json`;
+      try {
+        const loaded = await getDataLoadedPromise();
+        if (loaded) {
+          const year = date.split("-")[0];
+          const filePath = `${dataFile}season${year}.json`;
 
-        try {
           const response = await fetch(filePath);
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
           const data = await response.json();
           const dataMap = data.reduce((acc, item) => {
             acc[item.date] = item;
@@ -61,10 +64,10 @@ export const useSetDate = (date) => {
           }, {});
 
           setSeasonDataMap(dataMap);
-        } catch (error) {
-          //console.error("Error fetching season JSON data:", error);
-          seasonExists = false;
         }
+      } catch (error) {
+        console.error("Error fetching season JSON data:", error);
+        setSeasonExists(false);
       }
     };
 
@@ -72,16 +75,21 @@ export const useSetDate = (date) => {
   }, [date]);
 
   useEffect(() => {
+    let maxColor = -1;
     if (seasonDataMap) {
       const entries = seasonDataMap[date]?.entries || [];
-      if (seasonExists && entries.length)
+      if (seasonExists && entries.length) {
         entries.forEach(({ id, risk }) => {
           changeLayerColor(id, risk);
+          if(risk > maxColor)
+            maxColor = risk;
         });
-      else
+      } else {
         layers.forEach((layer) =>
-          changeLayerColor(layer.feature.properties.CODE, 5)
+          changeLayerColor(layer.feature.properties.CODE, -1)
         );
+      }
     }
-  }, [seasonDataMap, date]);
+    setMaxColor(maxColor);
+  }, [seasonDataMap, date, seasonExists]);
 };

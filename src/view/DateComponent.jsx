@@ -5,7 +5,6 @@ import React, { useState, useEffect, useRef } from "react";
 import Calendar from 'react-calendar'; 
 import 'react-calendar/dist/Calendar.css'; 
 import moment from 'moment'; 
-import { el } from 'date-fns/locale'; 
 import {
   runInterval,
   handleMouseDown,
@@ -15,18 +14,32 @@ import {
   handleTouchCancel
 } from "../functions/intervalHandlers";
 import { formatDateInGreek, handleDateClick, onChange, useSetDate } from "../functions/dateUtils";
+import colors from "../constants/colors";
 
 const DateComponent = () => {
   const today = moment().format('YYYY-MM-DD');
   const [date, setDate] = useState(today);
   const [calendarVisible, setCalendarVisible] = useState(false); 
+  const [maxColor, setMaxColor] = useState(-1); 
   const [intervalId, setIntervalId] = useState(null);
   const clickCount = useRef(0);
+  const calendarRef = useRef(null); 
 
-  useSetDate(date);
+  useSetDate(date, setMaxColor);
 
   useEffect(() => {
-    return () => clearTimeout(intervalId);
+    const handleClickOutside = (event) => {
+      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+        setCalendarVisible(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      clearTimeout(intervalId);
+    };
   }, [intervalId]);
 
   return (
@@ -42,12 +55,18 @@ const DateComponent = () => {
       >
         &lt; 
       </span>
-      <div className={styles.dateContainer} onClick={() => handleDateClick(calendarVisible, setCalendarVisible)}>
-        <div className={styles.dateInnerContainer}>
+      <div 
+      className={styles.dateContainer} 
+      onClick={() => handleDateClick(calendarVisible, setCalendarVisible)}>
+        <div className={styles.dateInnerContainer} style={{borderBottom : "4px solid " + colors.items.get(maxColor)}}>
           {formatDateInGreek(date)}
         </div>
         {calendarVisible && (
-          <div className={styles.calendarContainer} onClick={(e) => e.stopPropagation()}>
+          <div
+            className={styles.calendarContainer}
+            ref={calendarRef} 
+            onClick={(e) => e.stopPropagation()}
+          >
             <Calendar
               onChange={(newDate) => onChange(newDate, setDate, setCalendarVisible)}
               value={new Date(date)}

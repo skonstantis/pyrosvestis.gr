@@ -9,7 +9,7 @@ export default class Levels {
       this.addItem(2, "Υψηλός");
       this.addItem(3, "Πολύ Υψηλός");
       this.addItem(4, "Κατάσταση Συναγερμού");
-      this.addItem(5, "Μη Διαθέσιμο");
+      this.addItem(-1, "Μη Διαθέσιμο");
     }
   
     addItem(id, risk) {

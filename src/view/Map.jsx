@@ -11,6 +11,7 @@ import DateComponent from './DateComponent';
 const Map = () => {
   const [greeceData, setGreeceData] = useState(null);
   const [europeData, setEuropeData] = useState(null);
+  const [dataLoaded, setDataLoadedState] = useState(false);
 
   useEffect(() => {
     const fetchGreeceData = fetch(mapConfig.greeceJSONPath)
@@ -23,11 +24,19 @@ const Map = () => {
       .then((data) => setEuropeData(data))
       .catch((error) => console.error("Error fetching Europe GeoJSON data:", error));
 
-    Promise.all([fetchGreeceData, fetchEuropeData]).then(() => setDataLoaded(true));
-  }, [mapConfig.greeceJSONPath, mapConfig.europeJSONPath]);
+    Promise.all([fetchGreeceData, fetchEuropeData]).then(() => {
+      setDataLoaded(true);
+      setDataLoadedState(true);
+    });
+  }, []);
 
   return (
     <div style={mapConfig.style}>
+      {!dataLoaded && (
+        <div style={mapConfig.overlayStyle}>
+          Φόρτωση...
+        </div>
+      )}
       <MapContainer
         center={mapConfig.center}
         zoom={mapConfig.zoom}
@@ -41,8 +50,7 @@ const Map = () => {
         {europeData && <GeoJSON data={europeData} style={mapConfig.europeStyle} />}
         {greeceData && <GeoJSON data={greeceData} style={mapConfig.greeceStyle} onEachFeature={onEachGreeceFeature} />}
       </MapContainer>
-
-      <DateComponent/>
+      <DateComponent />
     </div>
   );
 };
