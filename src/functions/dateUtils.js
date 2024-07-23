@@ -1,11 +1,10 @@
 /* Author: Sotiris Konstantis */
 
-import { useEffect, useState } from "react";
-import { changeLayerColor } from "./colorUtils";
-import dataFile from "../constants/dataFile";
-import { getDataLoadedPromise } from "../variables/dataLoaded";
-import layers from "../constants/layers";
+import { useEffect } from "react";
 import moment from "moment";
+import { changeLayerColor } from "./colorUtils";
+import layers from "../constants/layers";
+import { useSeason } from "../contexts/seasonContext.jsx";
 
 export const handleDateClick = (calendarVisible, setCalendarVisible) => {
   setCalendarVisible(!calendarVisible);
@@ -41,48 +40,19 @@ export const formatDateInGreek = (dateString) => {
   return date.toLocaleDateString("el-GR", options);
 };
 
-export const useSetDate = (date, setMaxColor) => {
-  const [seasonDataMap, setSeasonDataMap] = useState(null);
-  const [seasonExists, setSeasonExists] = useState(true);
+export const useSetDate = (date) => {
+  const { seasonDataMap, seasonExists, loadData } = useSeason();
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const loaded = await getDataLoadedPromise();
-        if (loaded) {
-          const year = date.split("-")[0];
-          const filePath = `${dataFile}season${year}.json`;
-
-          const response = await fetch(filePath);
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          const data = await response.json();
-          const dataMap = data.reduce((acc, item) => {
-            acc[item.date] = item;
-            return acc;
-          }, {});
-
-          setSeasonDataMap(dataMap);
-        }
-      } catch (error) {
-        console.error("Error fetching season JSON data:", error);
-        setSeasonExists(false);
-      }
-    };
-
-    loadData();
-  }, [date]);
+    loadData(date);
+  }, [date, loadData]);
 
   useEffect(() => {
-    let maxColor = -1;
     if (seasonDataMap) {
       const entries = seasonDataMap[date]?.entries || [];
       if (seasonExists && entries.length) {
         entries.forEach(({ id, risk }) => {
           changeLayerColor(id, risk);
-          if(risk > maxColor)
-            maxColor = risk;
         });
       } else {
         layers.forEach((layer) =>
@@ -90,6 +60,5 @@ export const useSetDate = (date, setMaxColor) => {
         );
       }
     }
-    setMaxColor(maxColor);
   }, [seasonDataMap, date, seasonExists]);
 };
