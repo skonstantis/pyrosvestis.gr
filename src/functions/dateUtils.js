@@ -6,6 +6,14 @@ import { changeLayerColor } from "./colorUtils";
 import layers from "../constants/layers";
 import { useSeason } from "../contexts/seasonContext.jsx";
 
+export const handleClickOutside = (ref, setCalendarVisible) => {
+  return (event) => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      setCalendarVisible(false);
+    }
+  };
+};
+
 export const handleDateClick = (calendarVisible, setCalendarVisible) => {
   setCalendarVisible(!calendarVisible);
 };

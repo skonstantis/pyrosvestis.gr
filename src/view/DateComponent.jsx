@@ -18,6 +18,7 @@ import {
   handleDateClick,
   onChange,
   useSetDate,
+  handleClickOutside,
 } from "../functions/dateUtils";
 import { useMaxColor } from "../functions/colorUtils";
 import { SeasonProvider } from "../contexts/seasonContext.jsx";
@@ -25,6 +26,7 @@ import { isMobileDevice } from "../functions/isMobileDevice";
 
 const DateComponent = () => {
   const today = moment().format("YYYY-MM-DD");
+  const tomorrow = moment().add(1, 'days').format("YYYY-MM-DD");
   const [date, setDate] = useState(today);
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
@@ -34,35 +36,51 @@ const DateComponent = () => {
   useSetDate(date);
 
   const maxColor = useMaxColor(date);
+  const maxColorToday = useMaxColor(today);
+  const maxColorTomorrow = useMaxColor(tomorrow);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
-        setCalendarVisible(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
+    const outsideClickHandler = handleClickOutside(calendarRef, setCalendarVisible);
+    document.addEventListener("click", outsideClickHandler);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", outsideClickHandler);
       clearTimeout(intervalId);
     };
   }, [intervalId]);
 
+  const handleTodayClick = () => {
+    setDate(today);
+    setCalendarVisible(false);
+  };
+
+  const handleTomorrowClick = () => {
+    setDate(tomorrow);
+    setCalendarVisible(false);
+  };
+
   return (
     <SeasonProvider>
       <div className={styles.dateWrapper}>
+        <div className={styles.dateContainer}>
+          <div
+            className={`${styles.dateInnerContainer} ${date === today ? styles.disabled : ''}`}
+            style={{ borderBottom: "4px solid " + maxColorToday }}
+            onClick={date !== today ? handleTodayClick : null}
+          >
+            Σήμερα
+          </div>
+        </div>
         <span
-          onMouseDown={() =>{
-            if(!isMobileDevice())
-            handleMouseDown(
-              "previous",
-              clickCount,
-              setDate,
-              setIntervalId,
-              runInterval
-            );
+          onMouseDown={() => {
+            if (!isMobileDevice())
+              handleMouseDown(
+                "previous",
+                clickCount,
+                setDate,
+                setIntervalId,
+                runInterval
+              );
           }}
           onMouseUp={() => handleMouseUp(clickCount, intervalId, setIntervalId)}
           onMouseLeave={() =>
@@ -88,8 +106,11 @@ const DateComponent = () => {
           &lt;
         </span>
         <div
-          className={styles.dateContainer}
-          onClick={() => handleDateClick(calendarVisible, setCalendarVisible)}
+          className={styles.dateContainerCentral}
+          onClick={(event) => {
+            event.stopPropagation();
+            handleDateClick(calendarVisible, setCalendarVisible);
+          }}
         >
           <div
             className={styles.dateInnerContainer}
@@ -147,6 +168,15 @@ const DateComponent = () => {
         >
           &gt;
         </span>
+        <div className={styles.dateContainer}>
+          <div
+            className={`${styles.dateInnerContainer} ${date === tomorrow ? styles.disabled : ''}`}
+            style={{ borderBottom: "4px solid " + maxColorTomorrow }}
+            onClick={date !== tomorrow ? handleTomorrowClick : null}
+          >
+            Αύριο
+          </div>
+        </div>
       </div>
     </SeasonProvider>
   );

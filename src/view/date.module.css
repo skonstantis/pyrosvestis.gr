@@ -1,5 +1,11 @@
 /* Author: Sotiris Konstantis */
 
+.dateInnerContainer.disabled {
+  color: gray;
+  cursor: not-allowed;
+  border-bottom: 4px solid lightgray; 
+}
+
 .dateWrapper {
     position: absolute;
     bottom: 10px;
@@ -10,13 +16,14 @@
     z-index: 1000;
   }
   
-  .dateContainer {
+  .dateContainer,
+  .dateContainerCentral {
     width: 160px;
     text-align: center;
     position: relative;
   }
   
-  .dateContainer::after {
+  .dateContainerCentral::after {
     content: "Ημερολόγιο";
     position: absolute;
     bottom: 120%;
@@ -34,7 +41,8 @@
     z-index: 1;
   }
   
-  .dateContainer:hover::after {
+  .dateContainerCentral:hover::after
+  {
     opacity: 1;
     visibility: visible;
   }
