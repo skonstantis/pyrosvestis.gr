@@ -25,9 +25,9 @@ export const onChange = (newDate, setDate, setCalendarVisible) => {
 };
 
 export const changeDate = (prevDate, direction) => {
-  const newDate = new Date(prevDate);
-  newDate.setDate(newDate.getDate() + (direction === "next" ? 1 : -1));
-  return newDate.toISOString().split("T")[0];
+  return moment(prevDate)
+    .add(direction === "next" ? 1 : -1, "days")
+    .format("YYYY-MM-DD");
 };
 
 export const getInterval = (count) => {

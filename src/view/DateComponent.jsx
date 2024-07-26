@@ -26,7 +26,7 @@ import { isMobileDevice } from "../functions/isMobileDevice";
 
 const DateComponent = () => {
   const today = moment().format("YYYY-MM-DD");
-  const tomorrow = moment().add(1, 'days').format("YYYY-MM-DD");
+  const tomorrow = moment().add(1, "days").format("YYYY-MM-DD");
   const [date, setDate] = useState(today);
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
@@ -40,7 +40,10 @@ const DateComponent = () => {
   const maxColorTomorrow = useMaxColor(tomorrow);
 
   useEffect(() => {
-    const outsideClickHandler = handleClickOutside(calendarRef, setCalendarVisible);
+    const outsideClickHandler = handleClickOutside(
+      calendarRef,
+      setCalendarVisible
+    );
     document.addEventListener("click", outsideClickHandler);
 
     return () => {
@@ -64,7 +67,9 @@ const DateComponent = () => {
       <div className={styles.dateWrapper}>
         <div className={styles.dateContainer}>
           <div
-            className={`${styles.dateInnerContainer} ${date === today ? styles.disabled : ''}`}
+            className={`${styles.dateInnerContainer} ${
+              date === today ? styles.disabled : ""
+            }`}
             style={{ borderBottom: "4px solid " + maxColorToday }}
             onClick={date !== today ? handleTodayClick : null}
           >
@@ -136,15 +141,16 @@ const DateComponent = () => {
           )}
         </div>
         <span
-          onMouseDown={() =>
-            handleMouseDown(
-              "next",
-              clickCount,
-              setDate,
-              setIntervalId,
-              runInterval
-            )
-          }
+          onMouseDown={() => {
+            if (!isMobileDevice())
+              handleMouseDown(
+                "next",
+                clickCount,
+                setDate,
+                setIntervalId,
+                runInterval
+              );
+          }}
           onMouseUp={() => handleMouseUp(clickCount, intervalId, setIntervalId)}
           onMouseLeave={() =>
             handleMouseUp(clickCount, intervalId, setIntervalId)
@@ -170,7 +176,9 @@ const DateComponent = () => {
         </span>
         <div className={styles.dateContainer}>
           <div
-            className={`${styles.dateInnerContainer} ${date === tomorrow ? styles.disabled : ''}`}
+            className={`${styles.dateInnerContainer} ${
+              date === tomorrow ? styles.disabled : ""
+            }`}
             style={{ borderBottom: "4px solid " + maxColorTomorrow }}
             onClick={date !== tomorrow ? handleTomorrowClick : null}
           >

@@ -30,7 +30,6 @@ export const SeasonProvider = ({ children }) => {
         setSeasonDataMap(dataMap);
       }
     } catch (error) {
-      console.error("Error fetching season JSON data:", error);
       setSeasonExists(false);
     }
   };

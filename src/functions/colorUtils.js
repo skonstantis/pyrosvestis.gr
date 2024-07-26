@@ -17,6 +17,5 @@ export const changeLayerColor = (code, level) => {
 
 export const useMaxColor = (date) => {
   const { seasonDataMap } = useSeason();
-
-  return seasonDataMap ? colors.items.get(seasonDataMap[date]?.maxRisk) : null;
+  return (seasonDataMap ? (colors.items.get(seasonDataMap[date]?.maxRisk == undefined ? -1 :seasonDataMap[date]?.maxRisk)) : colors.items.get(-1));
 };
