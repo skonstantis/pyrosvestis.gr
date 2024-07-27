@@ -2,11 +2,28 @@
 
 import "leaflet/dist/leaflet.css";
 import React, { useEffect, useState } from "react";
-import { MapContainer, GeoJSON } from "react-leaflet";
+import { MapContainer, GeoJSON, useMap } from "react-leaflet";
 import * as mapConfig from "../constants/mapConfig";
 import { onEachGreeceFeature } from "../functions/onEachGreeceFeature";
 import { setDataLoaded } from "../variables/dataLoaded";
 import DateComponent from './DateComponent'; 
+import Header from './Header'; 
+import L from "leaflet";
+import "./map.css";
+
+const CustomAttribution = () => {
+  const map = useMap(); 
+
+  useEffect(() => {
+    const attributionControl = L.control.attribution({ prefix: false }).addTo(map);
+    
+    attributionControl.addAttribution(
+      '© 2024 - seismologos.gr - All rights reserved - <a href="https://leafletjs.comm">Leaflet</a>'
+    ); 
+  }, [map]);
+
+  return null;
+};
 
 const Map = () => {
   const [greeceData, setGreeceData] = useState(null);
@@ -46,11 +63,15 @@ const Map = () => {
         maxBounds={mapConfig.maxBounds}
         maxBoundsViscosity={mapConfig.maxBoundsViscosity}
         style={mapConfig.style}
+        attributionControl={false}
+        id="map"
       >
         {europeData && <GeoJSON data={europeData} style={mapConfig.europeStyle} />}
         {greeceData && <GeoJSON data={greeceData} style={mapConfig.greeceStyle} onEachFeature={onEachGreeceFeature} />}
+        <CustomAttribution />
       </MapContainer>
       <DateComponent />
+      <Header/>
     </div>
   );
 };
