@@ -20,7 +20,7 @@ import {
   useSetDate,
   handleClickOutside,
 } from "../functions/dateUtils";
-import { useMaxColor } from "../functions/colorUtils";
+import { useMaxColor, useTodayMaxColor, useTomorrowMaxColor } from "../functions/colorUtils";
 import { SeasonProvider } from "../contexts/seasonContext.jsx";
 import { isMobileDevice } from "../functions/isMobileDevice";
 
@@ -36,8 +36,8 @@ const DateComponent = () => {
   useSetDate(date);
 
   const maxColor = useMaxColor(date);
-  const maxColorToday = useMaxColor(today);
-  const maxColorTomorrow = useMaxColor(tomorrow);
+  const maxColorToday = useTodayMaxColor();
+  const maxColorTomorrow = useTomorrowMaxColor();
 
   useEffect(() => {
     const outsideClickHandler = handleClickOutside(
