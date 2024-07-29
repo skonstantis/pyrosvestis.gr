@@ -18,7 +18,7 @@ const CustomAttribution = () => {
     const attributionControl = L.control.attribution({ prefix: false }).addTo(map);
     
     attributionControl.addAttribution(
-      '© 2024 - seismologos.gr - All rights reserved - <a href="https://leafletjs.comm">Leaflet</a>'
+      '© 2024 - pyrosvestis.gr - All rights reserved - <a href="https://leafletjs.comm">Leaflet</a>'
     ); 
   }, [map]);
 

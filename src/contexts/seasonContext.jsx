@@ -1,10 +1,7 @@
-/* Author: Sotiris Konstantis */
-
-import React, { createContext, useState, useContext, useCallback } from 'react';
+import React, { createContext, useState, useContext, useCallback, useEffect } from 'react';
 import dataFile from '../constants/dataFile';
 import { getDataLoadedPromise } from '../variables/dataLoaded';
-import { useEffect } from "react";
-import moment from "moment";
+import moment from 'moment';
 
 const SeasonContext = createContext();
 
@@ -48,12 +45,30 @@ export const SeasonProvider = ({ children }) => {
       const tomorrowMap = await fetchSeasonData(tomorrow);
       setTodayData(todayMap[today]);
       setTomorrowData(tomorrowMap[tomorrow]);
+      // Trigger fetching data every second based on maxRisk value in tomorrowData
+      if (tomorrowMap[tomorrow]?.maxRisk === -1) {
+        const intervalId = setInterval(async () => {
+          try {
+            const newTomorrowMap = await fetchSeasonData(tomorrow);
+            setTomorrowData(newTomorrowMap[tomorrow]);
+            if (newTomorrowMap[tomorrow]?.maxRisk !== -1) {
+              clearInterval(intervalId);
+            }
+          } catch (error) {
+            console.error("Error refreshing tomorrow's data", error);
+          }
+        }, 1000); // Refresh every second
+
+        // Cleanup interval on component unmount or if maxRisk changes
+        return () => clearInterval(intervalId);
+      }
     } catch (error) {
       console.error("Error loading today's or tomorrow's data", error);
     }
   }, []);
 
   useEffect(() => {
+    // Call loadTodayData when the component mounts
     loadTodayData();
   }, [loadTodayData]);
 
