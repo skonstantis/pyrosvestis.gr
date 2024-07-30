@@ -125,6 +125,6 @@ export default class Locations {
   }
 
   addItem(id, layer, type, name) {
-      this.items.set(id, { layer, type, name });
+      this.items.set(id, { id, layer, type, name });
   }
 }

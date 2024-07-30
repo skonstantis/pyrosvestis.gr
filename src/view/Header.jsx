@@ -20,7 +20,8 @@ const Header = () => {
   };
 
   return (
-    <header className={styles.header}>
+    <header className={styles.header} 
+    onClick={(e) => e.stopPropagation()}>
       <img
         src={"../assets/logo.svg"}
         alt="Logo"

@@ -24,10 +24,9 @@ import { useMaxColor, useTodayMaxColor, useTomorrowMaxColor } from "../functions
 import { SeasonProvider } from "../contexts/seasonContext.jsx";
 import { isMobileDevice } from "../functions/isMobileDevice";
 
-const DateComponent = () => {
+const DateComponent = ({date, setDate, setIsSelected}) => {
   const today = moment().format("YYYY-MM-DD");
   const tomorrow = moment().add(1, "days").format("YYYY-MM-DD");
-  const [date, setDate] = useState(today);
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
   const clickCount = useRef(0);
@@ -42,7 +41,8 @@ const DateComponent = () => {
   useEffect(() => {
     const outsideClickHandler = handleClickOutside(
       calendarRef,
-      setCalendarVisible
+      setCalendarVisible,
+      setIsSelected
     );
     document.addEventListener("click", outsideClickHandler);
 
@@ -52,12 +52,14 @@ const DateComponent = () => {
     };
   }, [intervalId]);
 
-  const handleTodayClick = () => {
+  const handleTodayClick = (e) => {
+    e.stopPropagation();
     setDate(today);
     setCalendarVisible(false);
   };
 
-  const handleTomorrowClick = () => {
+  const handleTomorrowClick = (e) => {
+    e.stopPropagation();
     setDate(tomorrow);
     setCalendarVisible(false);
   };
@@ -107,6 +109,7 @@ const DateComponent = () => {
             handleTouchCancel(clickCount, intervalId, setIntervalId)
           }
           className={`${styles.arrow} ${styles.previous}`}
+          onClick={(e) => e.stopPropagation()}
         >
           &lt;
         </span>
@@ -171,6 +174,7 @@ const DateComponent = () => {
             handleTouchCancel(clickCount, intervalId, setIntervalId)
           }
           className={`${styles.arrow} ${styles.next}`}
+          onClick={(e) => e.stopPropagation()}
         >
           &gt;
         </span>

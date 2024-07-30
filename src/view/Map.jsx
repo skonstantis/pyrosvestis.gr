@@ -2,33 +2,51 @@
 
 import "leaflet/dist/leaflet.css";
 import React, { useEffect, useState } from "react";
-import { MapContainer, GeoJSON, useMap } from "react-leaflet";
+import { MapContainer, GeoJSON } from "react-leaflet";
 import * as mapConfig from "../constants/mapConfig";
 import { onEachGreeceFeature } from "../functions/onEachGreeceFeature";
 import { setDataLoaded } from "../variables/dataLoaded";
 import DateComponent from './DateComponent'; 
 import Header from './Header'; 
-import L from "leaflet";
 import "./map.css";
-
-const CustomAttribution = () => {
-  const map = useMap(); 
-
-  useEffect(() => {
-    const attributionControl = L.control.attribution({ prefix: false }).addTo(map);
-    
-    attributionControl.addAttribution(
-      '© 2024 - pyrosvestis.gr - All rights reserved - <a href="https://leafletjs.comm">Leaflet</a>'
-    ); 
-  }, [map]);
-
-  return null;
-};
+import RegionStats from "./RegionStats";
+import moment from "moment";
+import { CustomAttribution } from "./CustomAttribution";
+import layers from "../constants/layers";
+import levels from "../constants/levels";
+import colors from "../constants/colors";
+import locations from "../constants/locations";
 
 const Map = () => {
   const [greeceData, setGreeceData] = useState(null);
   const [europeData, setEuropeData] = useState(null);
   const [dataLoaded, setDataLoadedState] = useState(false);
+
+  const [isSelected, setIsSelected] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(moment().format("YYYY-MM-DD"));
+  const [selectedType, setSelectedType] = useState(null);
+  const [selectedName, setSelectedName] = useState(null);
+  const [selectedDanger, setSelectedDanger] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
+
+  useEffect(() => {
+    if(isSelected)
+    {
+      locations.items.forEach((item) => {
+        if(item.layer == selectedId.layer)
+        {
+          layers.forEach((layer) => {
+            if(layer.feature.properties.OBJECTID == item.layer)
+            {
+                setSelectedDanger((levels.items.get(colors.getColorId(layer.options.fillColor))));
+                setSelectedColor(colors.items.get(colors.getColorId(layer.options.fillColor)));
+            }
+          });
+        }
+      });      
+    }
+  }, [selectedDate]);
 
   useEffect(() => {
     const fetchGreeceData = fetch(mapConfig.greeceJSONPath)
@@ -67,11 +85,21 @@ const Map = () => {
         id="map"
       >
         {europeData && <GeoJSON data={europeData} style={mapConfig.europeStyle} />}
-        {greeceData && <GeoJSON data={greeceData} style={mapConfig.greeceStyle} onEachFeature={onEachGreeceFeature} />}
+        {greeceData && <GeoJSON data={greeceData} style={mapConfig.greeceStyle} onEachFeature={onEachGreeceFeature(setIsSelected, setSelectedId, setSelectedType, setSelectedName, setSelectedDanger, setSelectedColor)} />}
         <CustomAttribution />
       </MapContainer>
-      <DateComponent />
-      <Header/>
+      {isSelected && (
+        <RegionStats 
+          isSelected={isSelected}
+          selectedDate={selectedDate}
+          selectedType={selectedType}
+          selectedName={selectedName}
+          selectedDanger={selectedDanger}
+          selectedColor={selectedColor}
+        />
+      )}
+      <DateComponent date={selectedDate} setDate={setSelectedDate} setIsSelected={setIsSelected}/>
+      <Header />
     </div>
   );
 };
