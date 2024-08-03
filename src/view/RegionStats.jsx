@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+/* Author: Sotiris Konstantis */
+
 import styles from "./regionStats.module.css";
 
-const RegionStats = ({ isSelected, selectedDate, selectedType, selectedName, selectedDanger, selectedColor }) => {
+import { formatDateInGreek } from "../functions/dateUtils";
 
-  if (!isSelected) {
+const RegionStats = ({ isSelected, selectedDate, selectedType, selectedName, selectedDanger, selectedColor, riskData }) => {
+
+  if (!isSelected || !riskData) {
     return null; 
   }
 
@@ -13,9 +16,10 @@ const RegionStats = ({ isSelected, selectedDate, selectedType, selectedName, sel
 
   return (
     <div className={styles.container} style={containerStyle} onClick={(e) => e.stopPropagation()}>
-      <strong>{selectedDate}</strong><br />
-      <strong>{selectedType}: {selectedName}</strong><br />
-      <strong>Κίνδυνος: {selectedDanger}</strong><br />
+      <div className={styles.title}>{formatDateInGreek(selectedDate)}</div><br />
+      <div>{selectedType}: {selectedName}</div><br />
+      <div>Κίνδυνος: {selectedDanger}</div><br />
+      <div>Data: {JSON.stringify(riskData)}</div> {/* Display the fetched data */}
     </div>
   );
 };

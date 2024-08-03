@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useCallback, useEffect } from 'react';
 import dataFile from '../constants/dataFile';
 import { getDataLoadedPromise } from '../variables/dataLoaded';
-import moment from 'moment';
+import moment from "moment-timezone";
 
 const SeasonContext = createContext();
 
@@ -10,6 +10,7 @@ export const SeasonProvider = ({ children }) => {
   const [seasonExists, setSeasonExists] = useState(true);
   const [todayData, setTodayData] = useState(null);
   const [tomorrowData, setTomorrowData] = useState(null);
+  const [needsRefresh, setNeedsRefresh] = useState(false);
 
   const fetchSeasonData = async (date) => {
     const year = date.split("-")[0];
@@ -38,14 +39,14 @@ export const SeasonProvider = ({ children }) => {
   }, []);
 
   const loadTodayData = useCallback(async () => {
-    const today = moment().format("YYYY-MM-DD");
-    const tomorrow = moment().add(1, "days").format("YYYY-MM-DD");
+  const today = moment().tz("Europe/Athens").format("YYYY-MM-DD");
+  const tomorrow = moment().tz("Europe/Athens").add(1, "days").format("YYYY-MM-DD");
     try {
       const todayMap = await fetchSeasonData(today);
       const tomorrowMap = await fetchSeasonData(tomorrow);
       setTodayData(todayMap[today]);
       setTomorrowData(tomorrowMap[tomorrow]);
-      // Trigger fetching data every second based on maxRisk value in tomorrowData
+
       if (tomorrowMap[tomorrow]?.maxRisk === -1) {
         const intervalId = setInterval(async () => {
           try {
@@ -53,13 +54,13 @@ export const SeasonProvider = ({ children }) => {
             setTomorrowData(newTomorrowMap[tomorrow]);
             if (newTomorrowMap[tomorrow]?.maxRisk !== -1) {
               clearInterval(intervalId);
+              setNeedsRefresh(true);
             }
           } catch (error) {
             console.error("Error refreshing tomorrow's data", error);
           }
-        }, 1000); // Refresh every second
+        }, 1000); 
 
-        // Cleanup interval on component unmount or if maxRisk changes
         return () => clearInterval(intervalId);
       }
     } catch (error) {
@@ -68,7 +69,6 @@ export const SeasonProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    // Call loadTodayData when the component mounts
     loadTodayData();
   }, [loadTodayData]);
 
@@ -78,6 +78,8 @@ export const SeasonProvider = ({ children }) => {
     loadData,
     todayData,
     tomorrowData,
+    needsRefresh,
+    setNeedsRefresh
   };
 
   return (

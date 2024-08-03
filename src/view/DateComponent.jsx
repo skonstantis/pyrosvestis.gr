@@ -4,7 +4,7 @@ import styles from "./date.module.css";
 import React, { useState, useEffect, useRef } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import moment from "moment";
+import moment from "moment-timezone";
 import {
   runInterval,
   handleMouseDown,
@@ -25,8 +25,8 @@ import { SeasonProvider } from "../contexts/seasonContext.jsx";
 import { isMobileDevice } from "../functions/isMobileDevice";
 
 const DateComponent = ({date, setDate, setIsSelected}) => {
-  const today = moment().format("YYYY-MM-DD");
-  const tomorrow = moment().add(1, "days").format("YYYY-MM-DD");
+  const today = moment().tz("Europe/Athens").format("YYYY-MM-DD");
+  const tomorrow = moment().tz("Europe/Athens").add(1, "days").format("YYYY-MM-DD");
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
   const clickCount = useRef(0);

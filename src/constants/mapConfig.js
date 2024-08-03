@@ -1,6 +1,7 @@
 /* Author: Sotiris Konstantis */
 
 import { isMobileDevice } from "../functions/isMobileDevice";
+import initalFillColor from "./initialFillColor";
 
 export const greeceJSONPath = "../../assets/dasarcheia-final.geojson";
 
@@ -8,7 +9,7 @@ export const europeJSONPath = "../../assets/europe.geojson";
 
 export const center = isMobileDevice() ? [38.3, 24.0] : [38.4, 24.8];
 
-export const zoom = isMobileDevice() ? 5.8 : 6.6;
+export const zoom = isMobileDevice() ? 5.8 : 6.5;
 
 export const minZoom = zoom;
 
@@ -29,7 +30,7 @@ export const greeceStyle = {
   color: "#000000",
   weight: 1,
   opacity: 0.5,
-  fillColor: "#505050",
+  fillColor: initalFillColor,
   fillOpacity: 1,
 };
 
