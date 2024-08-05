@@ -24,7 +24,7 @@ import { useMaxColor, useTodayMaxColor, useTomorrowMaxColor } from "../functions
 import { SeasonProvider } from "../contexts/seasonContext.jsx";
 import { isMobileDevice } from "../functions/isMobileDevice";
 
-const DateComponent = ({date, setDate, setIsSelected}) => {
+const DateComponent = ({date, setDate, setIsSelected, setSelectedLongitude, setSelectedLatitude}) => {
   const today = moment().tz("Europe/Athens").format("YYYY-MM-DD");
   const tomorrow = moment().tz("Europe/Athens").add(1, "days").format("YYYY-MM-DD");
   const [calendarVisible, setCalendarVisible] = useState(false);

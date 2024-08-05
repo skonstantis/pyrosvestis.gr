@@ -29,9 +29,29 @@ export const useSessionStorage = () => {
     sessionStorage.setItem('isSelected', isSelected.toString());
     if (!isSelected) {
       setSelectedId(null);
+      setSelectedLongitude(null);
+      setSelectedLatitude(null);
       sessionStorage.setItem('selectedId', JSON.stringify(null));
     }
   }, [isSelected]);
 
-  return { selectedDate, setSelectedDate, isSelected, setIsSelected, selectedId, setSelectedId };
+  const [selectedLongitude, setSelectedLongitude] = useState(() => {
+    const storedSelectedLongitude = sessionStorage.getItem('selectedLongitude');
+    return storedSelectedLongitude != "null" ? parseFloat(storedSelectedLongitude) : null;
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem('selectedLongitude', selectedLongitude);
+  }, [selectedLongitude]);
+
+  const [selectedLatitude, setSelectedLatitude] = useState(() => {
+    const storedSelectedLatitude = sessionStorage.getItem('selectedLatitude');
+    return storedSelectedLatitude != "null" ? parseFloat(storedSelectedLatitude) : null;
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem('selectedLatitude', selectedLatitude);
+  }, [selectedLatitude]);
+
+  return { selectedDate, setSelectedDate, isSelected, setIsSelected, selectedId, setSelectedId, selectedLongitude, setSelectedLongitude, selectedLatitude, setSelectedLatitude };
 };

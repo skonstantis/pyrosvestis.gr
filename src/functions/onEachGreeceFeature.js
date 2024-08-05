@@ -6,8 +6,7 @@ import levels from "../constants/levels";
 import locations from "../constants/locations";
 import types from "../constants/types";
 
-export const onEachGreeceFeature = (setIsSelected, setSelectedId, setSelectedType, setSelectedName, setSelectedDanger, setSelectedColor) => (feature, layer) => {
-
+export const onEachGreeceFeature = (setIsSelected, setSelectedId, setSelectedType, setSelectedName, setSelectedDanger, setSelectedColor, setSelectedLongitude, setSelectedLatitude) => (feature, layer) => {
   layers.push(layer);
 
   layer.on({
@@ -36,6 +35,8 @@ export const onEachGreeceFeature = (setIsSelected, setSelectedId, setSelectedTyp
       setSelectedName(name);
       setSelectedDanger(danger);
       setSelectedColor(color);
+      setSelectedLongitude(e.latlng.lng);
+      setSelectedLatitude(e.latlng.lat);
     },
   });
 };

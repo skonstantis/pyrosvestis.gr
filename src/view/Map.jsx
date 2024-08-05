@@ -1,5 +1,7 @@
 /* Author: Sotiris Konstantis */
 
+import L from 'leaflet';
+import { useMap } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
 import React, { useEffect, useState, useRef } from "react";
 import { MapContainer, GeoJSON } from "react-leaflet";
@@ -23,6 +25,7 @@ import types from "../constants/types";
 import noOfLayers from "../constants/noOfLayers";
 import initialFillColor from "../constants/initialFillColor";
 import { Categories } from "./Categories";
+import CircleComponent from './circleComponent';
 
 const Map = () => {
   const [greeceData, setGreeceData] = useState(null);
@@ -34,7 +37,7 @@ const Map = () => {
   const [selectedDanger, setSelectedDanger] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
 
-  const {selectedDate, setSelectedDate, isSelected, setIsSelected, selectedId, setSelectedId} = useSessionStorage();
+  const {selectedDate, setSelectedDate, isSelected, setIsSelected, selectedId, setSelectedId, selectedLongitude, setSelectedLongitude, selectedLatitude, setSelectedLatitude} = useSessionStorage();
 
   const previousDateRef = useRef(moment().tz("Europe/Athens").format("YYYY-MM-DD"));
 
@@ -97,7 +100,6 @@ const Map = () => {
           if (selectedId && item.layer === selectedId.layer) {
             layers.forEach((layer) => {
               if (layer.feature.properties.OBJECTID === item.layer) {
-                console.log(colors.getColorId(layer.options.fillColor));
                 if(layer.options.fillColor == initialFillColor)
                 {       
                   setTimeout(checkAndExecute, 10);
@@ -167,11 +169,14 @@ const Map = () => {
               setSelectedType,
               setSelectedName,
               setSelectedDanger,
-              setSelectedColor
+              setSelectedColor,
+              setSelectedLongitude,
+              setSelectedLatitude
             )}
           />
         )}
         <CustomAttribution />
+        <CircleComponent center={{ lat: selectedLatitude, lng: selectedLongitude }} />
       </MapContainer>
         <RegionStats
           isSelected={isSelected}
@@ -188,6 +193,8 @@ const Map = () => {
         date={selectedDate}
         setDate={setSelectedDate}
         setIsSelected={setIsSelected}
+        setSelectedLongitude={setSelectedLongitude}
+        setSelectedLatitude={setSelectedLatitude}
       />
       <Header />
     </div>
