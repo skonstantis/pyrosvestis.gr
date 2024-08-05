@@ -24,7 +24,7 @@ export const maxBounds = [
 
 export const maxBoundsViscosity = 1.0;
 
-export const style = { position: "relative", height: "100vh", width: "100%", background: "#B0B0B0" };
+export const style = { height: "100vh", width: "100%", background: "#B0B0B0" };
 
 export const greeceStyle = {
   color: "#000000",
