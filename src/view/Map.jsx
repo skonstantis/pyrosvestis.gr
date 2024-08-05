@@ -173,7 +173,6 @@ const Map = () => {
         )}
         <CustomAttribution />
       </MapContainer>
-        <Categories />
         <RegionStats
           isSelected={isSelected}
           selectedDate={selectedDate}
@@ -183,6 +182,8 @@ const Map = () => {
           selectedColor={selectedColor}
           riskData={currentRisk} 
         />
+        
+      <Categories />
       <DateComponent
         date={selectedDate}
         setDate={setSelectedDate}
