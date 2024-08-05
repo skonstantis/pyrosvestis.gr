@@ -1,7 +1,7 @@
 /* Author: Sotiris Konstantis */
 .mobile {
-    top: 100%;
-    transform: translateY(calc(-100% - 70px));
+    top: 50px;
+    right: 0px;
     margin: 10px;
 }
 
