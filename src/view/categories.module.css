@@ -1,0 +1,78 @@
+/* Author: Sotiris Konstantis */
+
+.mobile{
+    left:0 ;
+    bottom: 0;
+    margin: 10px;
+    margin-bottom: 0px;
+}
+
+.desktop{
+    top: 50%;
+    right: 0;
+    margin: 10px;
+}
+
+.container {
+    position: absolute;
+    transform: translateY(-50%);
+    z-index: 1000;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bolder;
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start; 
+    font-weight: bolder;
+    background-color: black;
+    opacity: 0.7;
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+    text-shadow: 0px 4px 4px rgba(16, 16, 16, 0.25);
+    color: white;
+    padding: 5px;
+}
+
+.entry {
+    display: flex;
+    align-items: center; 
+    margin-bottom: 5px; 
+}
+
+.text {
+    padding-left: 5px; 
+    white-space: nowrap; 
+    text-shadow: 0px 4px 4px rgba(16, 16, 16, 0.25);
+}
+
+.dots {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.five {
+    background-color: #FE0003;
+}
+
+.four {
+    background-color: #FFA304;
+}
+
+.three {
+    background-color: #FFFF00;
+}
+
+.two {
+    background-color: #A7CAF0;
+}
+
+.one {
+    background-color: #A5FEA4;
+}
+
+.notfound {
+    background-color: #FFFFFF;
+}

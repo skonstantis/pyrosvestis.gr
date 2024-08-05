@@ -9,7 +9,7 @@ export default class Colors {
     this.addItem(2, "#FFFF00");
     this.addItem(3, "#FFA304");
     this.addItem(4, "#FE0003");
-    this.addItem(-1, "#505050");
+    this.addItem(-1, "#FFFFFF");
   }
 
   addItem(id, color) {

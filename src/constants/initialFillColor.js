@@ -1,5 +1,5 @@
 /* Author: Sotiris Konstantis */
 
-const initalFillColor = "transparent";
+const initialFillColor = "transparent";
 
-export default initalFillColor;
+export default initialFillColor;

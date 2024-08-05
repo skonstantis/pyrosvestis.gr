@@ -21,7 +21,8 @@ import riskFile from "../constants/riskFile";
 import { useSessionStorage } from '../functions/useSessionStorage';
 import types from "../constants/types";
 import noOfLayers from "../constants/noOfLayers";
-import initalFillColor from "../constants/initialFillColor";
+import initialFillColor from "../constants/initialFillColor";
+import { Categories } from "./Categories";
 
 const Map = () => {
   const [greeceData, setGreeceData] = useState(null);
@@ -97,7 +98,7 @@ const Map = () => {
             layers.forEach((layer) => {
               if (layer.feature.properties.OBJECTID === item.layer) {
                 console.log(colors.getColorId(layer.options.fillColor));
-                if(layer.options.fillColor == initalFillColor)
+                if(layer.options.fillColor == initialFillColor)
                 {       
                   setTimeout(checkAndExecute, 10);
                   return;
@@ -172,6 +173,7 @@ const Map = () => {
         )}
         <CustomAttribution />
       </MapContainer>
+        <Categories />
         <RegionStats
           isSelected={isSelected}
           selectedDate={selectedDate}
