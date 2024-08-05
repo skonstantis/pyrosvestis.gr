@@ -34,7 +34,7 @@ export const Categories = () => {
           <div className={styles.text}>Χαμηλός</div>
         </div>
         
-        <div className={styles.entry}>
+        <div className={styles.entry + ' ' + styles.lastEntry}>
           <div className={styles.dots + ' ' + styles.notfound}></div>
           <div className={styles.text}>Μη Διαθέσιμο</div>
         </div>
