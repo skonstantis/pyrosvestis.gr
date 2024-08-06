@@ -1,9 +1,10 @@
-// CircleComponent.js
+/* Author: Sotiris Konstantis */
+
 import React from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 
-const CircleComponent = ({ center }) => {
+export const CircleComponent = ({ center }) => {
   const map = useMap();
 
   React.useEffect(() => {
@@ -19,14 +20,14 @@ const CircleComponent = ({ center }) => {
 
       L.circle([lat, lng], {
         color: 'black',
-        fillColor: 'black',
-        fillOpacity: 0.5,
-        radius: 500
+        fillColor: 'white',
+        weight: 1,
+        fillOpacity: 1,
+        radius: 5000,
+        interactive: false
       }).addTo(map);
     }
   }, [center, map]);
 
   return null;
 };
-
-export default CircleComponent;

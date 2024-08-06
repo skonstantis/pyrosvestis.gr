@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment-timezone';
+import { isMobileDevice } from './isMobileDevice';
 
 export const useSessionStorage = () => {
   const [selectedDate, setSelectedDate] = useState(() => {
@@ -53,5 +54,23 @@ export const useSessionStorage = () => {
     sessionStorage.setItem('selectedLatitude', selectedLatitude);
   }, [selectedLatitude]);
 
-  return { selectedDate, setSelectedDate, isSelected, setIsSelected, selectedId, setSelectedId, selectedLongitude, setSelectedLongitude, selectedLatitude, setSelectedLatitude };
+  const [mapCenter, setMapCenter] = useState(() => {
+    const storedMapCenter = sessionStorage.getItem('mapCenter');
+    return storedMapCenter ? JSON.parse(storedMapCenter) : (isMobileDevice() ? [37.6, 24.0] : [38.4, 24.8]);
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem('mapCenter', "[" + mapCenter + "]");
+  }, [mapCenter]);
+
+  const [mapZoom, setMapZoom] = useState(() => {
+    const storedMapZoom = sessionStorage.getItem('mapZoom');
+    return storedMapZoom ? JSON.parse(storedMapZoom) : (isMobileDevice() ? 5.8 : 6.5);
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem('mapZoom', mapZoom);
+  }, [mapZoom]);
+
+  return { selectedDate, setSelectedDate, isSelected, setIsSelected, selectedId, setSelectedId, selectedLongitude, setSelectedLongitude, selectedLatitude, setSelectedLatitude, mapCenter, setMapCenter, mapZoom, setMapZoom };
 };

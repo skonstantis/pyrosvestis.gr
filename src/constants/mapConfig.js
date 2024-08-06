@@ -1,17 +1,10 @@
 /* Author: Sotiris Konstantis */
 
-import { isMobileDevice } from "../functions/isMobileDevice";
 import initialFillColor from "./initialFillColor";
 
 export const greeceJSONPath = "../../assets/dasarcheia-final.geojson";
 
 export const europeJSONPath = "../../assets/europe.geojson";
-
-export const center = isMobileDevice() ? [37.6, 24.0] : [38.4, 24.8];
-
-export const zoom = isMobileDevice() ? 5.8 : 6.5;
-
-export const minZoom = zoom;
 
 export const maxZoom = 18;
 

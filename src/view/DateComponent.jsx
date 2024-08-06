@@ -31,6 +31,7 @@ const DateComponent = ({date, setDate, setIsSelected, setSelectedLongitude, setS
   const [intervalId, setIntervalId] = useState(null);
   const clickCount = useRef(0);
   const calendarRef = useRef(null);
+  const [dragging, setDragging] = useState(false);
 
   useSetDate(date);
 
@@ -38,19 +39,35 @@ const DateComponent = ({date, setDate, setIsSelected, setSelectedLongitude, setS
   const maxColorToday = useTodayMaxColor();
   const maxColorTomorrow = useTomorrowMaxColor();
 
-  useEffect(() => {
+useEffect(() => {
+    const handleMouseDown = () => {
+        setDragging(false); 
+    };
+
+    const handleMouseMove = () => {
+      setDragging(true); 
+    };
+
     const outsideClickHandler = handleClickOutside(
+      dragging,
       calendarRef,
       setCalendarVisible,
       setIsSelected
     );
-    document.addEventListener("click", outsideClickHandler);
+
+    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('click', outsideClickHandler);
 
     return () => {
-      document.removeEventListener("click", outsideClickHandler);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('click', outsideClickHandler);
       clearTimeout(intervalId);
     };
-  }, [intervalId]);
+    
+  }, [calendarRef, setCalendarVisible, setIsSelected, dragging, intervalId]);
 
   const handleTodayClick = (e) => {
     e.stopPropagation();

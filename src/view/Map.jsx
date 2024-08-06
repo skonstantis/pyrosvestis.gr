@@ -1,7 +1,5 @@
 /* Author: Sotiris Konstantis */
 
-import L from 'leaflet';
-import { useMap } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
 import React, { useEffect, useState, useRef } from "react";
 import { MapContainer, GeoJSON } from "react-leaflet";
@@ -25,7 +23,10 @@ import types from "../constants/types";
 import noOfLayers from "../constants/noOfLayers";
 import initialFillColor from "../constants/initialFillColor";
 import { Categories } from "./Categories";
-import CircleComponent from './circleComponent';
+import { CircleComponent } from './CircleComponent';
+import { MapEventHandler } from './MapEventHandler';
+import { isMobileDevice } from '../functions/isMobileDevice';
+import { CityMarkers } from './CityMarkers';
 
 const Map = () => {
   const [greeceData, setGreeceData] = useState(null);
@@ -37,7 +38,7 @@ const Map = () => {
   const [selectedDanger, setSelectedDanger] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
 
-  const {selectedDate, setSelectedDate, isSelected, setIsSelected, selectedId, setSelectedId, selectedLongitude, setSelectedLongitude, selectedLatitude, setSelectedLatitude} = useSessionStorage();
+  const {selectedDate, setSelectedDate, isSelected, setIsSelected, selectedId, setSelectedId, selectedLongitude, setSelectedLongitude, selectedLatitude, setSelectedLatitude, mapCenter, setMapCenter, mapZoom, setMapZoom} = useSessionStorage();
 
   const previousDateRef = useRef(moment().tz("Europe/Athens").format("YYYY-MM-DD"));
 
@@ -132,7 +133,6 @@ const Map = () => {
   
   }, [selectedDate, isSelected, riskData, selectedId, layers]);
   
-
   useEffect(() => {
     if (needsRefresh) {
       fetchRiskData(); 
@@ -145,17 +145,18 @@ const Map = () => {
     <div style={mapConfig.style}>
       {!dataLoaded && <div style={mapConfig.overlayStyle}>Φόρτωση...</div>}
       <MapContainer
-        center={mapConfig.center}
-        zoom={mapConfig.zoom}
+        center={mapCenter}
+        zoom={mapZoom}
         zoomSnap={mapConfig.zoomSnap}
         maxZoom={mapConfig.maxZoom}
-        minZoom={mapConfig.minZoom}
+        minZoom={(isMobileDevice() ? 5.8 : 6.5)}
         maxBounds={mapConfig.maxBounds}
         maxBoundsViscosity={mapConfig.maxBoundsViscosity}
         style={mapConfig.style}
         attributionControl={false}
         id="map"
       >
+        <MapEventHandler setMapCenter={setMapCenter} setMapZoom={setMapZoom} />
         {europeData && (
           <GeoJSON data={europeData} style={mapConfig.europeStyle} />
         )}
@@ -175,6 +176,7 @@ const Map = () => {
             )}
           />
         )}
+        {dataLoaded && <CityMarkers mapZoom={mapZoom}/>}
         <CustomAttribution />
         <CircleComponent center={{ lat: selectedLatitude, lng: selectedLongitude }} />
       </MapContainer>
