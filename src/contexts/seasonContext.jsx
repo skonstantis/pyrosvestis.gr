@@ -1,3 +1,5 @@
+/* Author: Sotiris Konstantis */
+
 import React, { createContext, useState, useContext, useCallback, useEffect } from 'react';
 import dataFile from '../constants/dataFile';
 import { getDataLoadedPromise } from '../variables/dataLoaded';

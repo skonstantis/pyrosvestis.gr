@@ -1,3 +1,5 @@
+/* Author: Sotiris Konstantis */
+
 import { useState, useEffect } from 'react';
 import moment from 'moment-timezone';
 import { isMobileDevice } from './isMobileDevice';

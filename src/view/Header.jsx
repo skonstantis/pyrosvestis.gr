@@ -29,7 +29,7 @@ const Header = () => {
         onClick={refreshPage}
       />
       <div className={styles.headerText} onClick={refreshPage}>
-        Pyrosvestis.gr
+        Pyrosvestis.gr (beta)
       </div>
       {!isMobile && (
         <div className={styles.memoText} onClick={refreshPage}>
