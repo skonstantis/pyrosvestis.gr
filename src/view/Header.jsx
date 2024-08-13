@@ -16,7 +16,7 @@ const Header = () => {
   };
 
   const openX = () => {
-    window.open("https://x.com/seismologos", "_blank");
+    window.open("https://x.com/pyrosvestis_gr", "_blank");
   };
 
   return (

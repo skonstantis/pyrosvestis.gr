@@ -17,15 +17,22 @@ export const SeasonProvider = ({ children }) => {
   const fetchSeasonData = async (date) => {
     const year = date.split("-")[0];
     const filePath = `${dataFile}season${year}.json`;
-    const response = await fetch(filePath);
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
+    try{
+      const response = await fetch(filePath);
+      
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      return data.reduce((acc, item) => {
+        acc[item.date] = item;
+        return acc;
+      }, {});
     }
-    const data = await response.json();
-    return data.reduce((acc, item) => {
-      acc[item.date] = item;
-      return acc;
-    }, {});
+    catch(e)
+    {
+
+    }
   };
 
   const loadData = useCallback(async (date) => {
