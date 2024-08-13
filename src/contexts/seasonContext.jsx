@@ -31,7 +31,6 @@ export const SeasonProvider = ({ children }) => {
     }
     catch(e)
     {
-
     }
   };
 
