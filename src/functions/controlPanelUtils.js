@@ -1,7 +1,7 @@
 /* Author: Sotiris Konstantis */
 
 export const onSettingClick = (e, value, set) => {
-   e.preventDefault();
+   e.stopPropagation();
    set(!value);
 };
   
