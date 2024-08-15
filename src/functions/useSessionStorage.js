@@ -74,5 +74,16 @@ export const useSessionStorage = () => {
     sessionStorage.setItem('mapZoom', mapZoom);
   }, [mapZoom]);
 
-  return { selectedDate, setSelectedDate, isSelected, setIsSelected, selectedId, setSelectedId, selectedLongitude, setSelectedLongitude, selectedLatitude, setSelectedLatitude, mapCenter, setMapCenter, mapZoom, setMapZoom };
+  const [isCitiesSettingEnabled, setIsCitiesSettingEnabled] = useState(() => {
+    const isCitiesSettingEnabled = sessionStorage.getItem('isCitiesSettingEnabled');
+    return isCitiesSettingEnabled === 'true';
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem('isCitiesSettingEnabled', isCitiesSettingEnabled);
+  }, [isCitiesSettingEnabled]);
+
+  return { selectedDate, setSelectedDate, isSelected, setIsSelected, selectedId, setSelectedId, 
+    selectedLongitude, setSelectedLongitude, selectedLatitude, setSelectedLatitude, mapCenter, 
+    setMapCenter, mapZoom, setMapZoom, isCitiesSettingEnabled, setIsCitiesSettingEnabled };
 };

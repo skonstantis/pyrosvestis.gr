@@ -20,13 +20,26 @@ import {
   useSetDate,
   handleClickOutside,
 } from "../functions/dateUtils";
-import { useMaxColor, useTodayMaxColor, useTomorrowMaxColor } from "../functions/colorUtils";
-import { SeasonProvider } from "../contexts/seasonContext.jsx";
+import {
+  useMaxColor,
+  useTodayMaxColor,
+  useTomorrowMaxColor,
+} from "../functions/colorUtils";
+import { SeasonProvider } from "../contexts/SeasonContext.jsx";
 import { isMobileDevice } from "../functions/isMobileDevice";
 
-const DateComponent = ({date, setDate, setIsSelected, setSelectedLongitude, setSelectedLatitude}) => {
+const DateComponent = ({
+  date,
+  setDate,
+  setIsSelected,
+  setSelectedLongitude,
+  setSelectedLatitude,
+}) => {
   const today = moment().tz("Europe/Athens").format("YYYY-MM-DD");
-  const tomorrow = moment().tz("Europe/Athens").add(1, "days").format("YYYY-MM-DD");
+  const tomorrow = moment()
+    .tz("Europe/Athens")
+    .add(1, "days")
+    .format("YYYY-MM-DD");
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
   const clickCount = useRef(0);
@@ -39,13 +52,13 @@ const DateComponent = ({date, setDate, setIsSelected, setSelectedLongitude, setS
   const maxColorToday = useTodayMaxColor();
   const maxColorTomorrow = useTomorrowMaxColor();
 
-useEffect(() => {
+  useEffect(() => {
     const handleMouseDown = () => {
-        setDragging(false); 
+      setDragging(false);
     };
 
     const handleMouseMove = () => {
-      setDragging(true); 
+      setDragging(true);
     };
 
     const outsideClickHandler = handleClickOutside(
@@ -55,18 +68,17 @@ useEffect(() => {
       setIsSelected
     );
 
-    document.addEventListener('mousedown', handleMouseDown);
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('click', outsideClickHandler);
+    document.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("click", outsideClickHandler);
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('click', outsideClickHandler);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("click", outsideClickHandler);
       clearTimeout(intervalId);
     };
-    
   }, [calendarRef, setCalendarVisible, setIsSelected, dragging, intervalId]);
 
   const handleTodayClick = (e) => {

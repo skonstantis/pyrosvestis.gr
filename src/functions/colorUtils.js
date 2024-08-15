@@ -2,7 +2,7 @@
 
 import layers from "../constants/layers";
 import colors from "../constants/colors";
-import { useSeason } from "../contexts/seasonContext.jsx";
+import { useSeason } from "../contexts/SeasonContext.jsx";
 import { useEffect } from "react";
 
 export const changeLayerColor = (code, level) => {
@@ -30,10 +30,14 @@ export const useMaxColor = (date) => {
 
 export const useTodayMaxColor = () => {
   const { todayData } = useSeason();
-  return todayData ? colors.items.get(todayData.maxRisk ?? -1) : colors.items.get(-1);
+  return todayData
+    ? colors.items.get(todayData.maxRisk ?? -1)
+    : colors.items.get(-1);
 };
 
 export const useTomorrowMaxColor = () => {
   const { tomorrowData } = useSeason();
-  return tomorrowData ? colors.items.get(tomorrowData.maxRisk ?? -1) : colors.items.get(-1);
+  return tomorrowData
+    ? colors.items.get(tomorrowData.maxRisk ?? -1)
+    : colors.items.get(-1);
 };

@@ -1,0 +1,33 @@
+/* Author: Sotiris Konstantis */
+
+.panel{
+    position: absolute;
+    padding-left: 10px;
+    bottom: 0px;
+    display: flex;
+    z-index: 10000000000000;
+}
+
+.panelMobile{
+    position: absolute;
+    right: 0px;
+    padding-right: 10px;
+    top: 40px;
+    display: flex;
+    z-index: 10000000000000;
+}
+
+p{
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    padding-left: 5px;
+}
+
+.on{
+    opacity: 1;
+}
+
+.off{
+    opacity: 0.7;
+}

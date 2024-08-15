@@ -4,12 +4,16 @@ import { useEffect } from "react";
 import moment from "moment-timezone";
 import { changeLayerColor } from "./colorUtils";
 import layers from "../constants/layers";
-import { useSeason } from "../contexts/seasonContext.jsx";
+import { useSeason } from "../contexts/SeasonContext.jsx";
 
-export const handleClickOutside = (dragging, ref, setCalendarVisible, setIsSelected) => {
+export const handleClickOutside = (
+  dragging,
+  ref,
+  setCalendarVisible,
+  setIsSelected
+) => {
   return (event) => {
-    if(!dragging)
-    {
+    if (!dragging) {
       setIsSelected(false);
       if (ref.current && !ref.current.contains(event.target)) {
         setCalendarVisible(false);
@@ -23,13 +27,16 @@ export const handleDateClick = (calendarVisible, setCalendarVisible) => {
 };
 
 export const onChange = (newDate, setDate, setCalendarVisible) => {
-  const formattedDate = moment.tz(newDate, "Europe/Athens").format("YYYY-MM-DD");
+  const formattedDate = moment
+    .tz(newDate, "Europe/Athens")
+    .format("YYYY-MM-DD");
   setDate(formattedDate);
   setCalendarVisible(false);
 };
 
 export const changeDate = (prevDate, direction) => {
-  return moment.tz(prevDate, "Europe/Athens")
+  return moment
+    .tz(prevDate, "Europe/Athens")
     .add(direction === "next" ? 1 : -1, "days")
     .format("YYYY-MM-DD");
 };
