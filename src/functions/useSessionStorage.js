@@ -75,12 +75,12 @@ export const useSessionStorage = () => {
   }, [mapZoom]);
 
   const [isCitiesSettingEnabled, setIsCitiesSettingEnabled] = useState(() => {
-    const isCitiesSettingEnabled = sessionStorage.getItem('isCitiesSettingEnabled');
+    const isCitiesSettingEnabled = localStorage.getItem('isCitiesSettingEnabled');
     return isCitiesSettingEnabled === 'true';
   });
 
   useEffect(() => {
-    sessionStorage.setItem('isCitiesSettingEnabled', isCitiesSettingEnabled);
+    localStorage.setItem('isCitiesSettingEnabled', isCitiesSettingEnabled);
   }, [isCitiesSettingEnabled]);
 
   return { selectedDate, setSelectedDate, isSelected, setIsSelected, selectedId, setSelectedId, 
