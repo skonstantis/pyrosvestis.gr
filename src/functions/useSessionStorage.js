@@ -76,7 +76,7 @@ export const useSessionStorage = () => {
 
   const [isCitiesSettingEnabled, setIsCitiesSettingEnabled] = useState(() => {
     const isCitiesSettingEnabled = localStorage.getItem('isCitiesSettingEnabled');
-    return isCitiesSettingEnabled === 'true';
+    return isCitiesSettingEnabled === 'false' ? false : true;
   });
 
   useEffect(() => {
